@@ -76,6 +76,11 @@ public class SistemaAlertas
         return new List<Alerta>();        
     }
 
+    /*
+     * DISCLAIMER: Se pueden obtener todas las alertas no expiradas para un tema. Se informa para cada alerta si es para todos los usuarios o para uno específico.
+     * Mi manera de comprender el usuario es que se puede buscar las alertas no expiradas por tema y se puede especificar si es en general por un usuario
+     * Esto lo aclaro porque puede que mi comprension de este punto sea erronea
+     */
     public List<Alerta> ObtenerAlertasNoExpiradasPorTema(string tema, string nombreUser = "")
     {
         List<Alerta> alertasObtenidas = new List<Alerta>();
@@ -100,21 +105,4 @@ public class SistemaAlertas
         return alertasObtenidas;
     }
 }
-
-/*
- SELECT 
-c.ID,
-c.Nombre,
-c.Apellido
-FROM 
-Clientes c
-JOIN 
-Ventas v ON c.ID = v.Id_cliente
-WHERE 
-v.Fecha >= DATEADD(month, -12, GETDATE())  -- Obtener ventas de los últimos 12 meses
-GROUP BY 
-c.ID, c.Nombre, c.Apellido
-HAVING 
-SUM(v.Importe) > 100000
- */
 

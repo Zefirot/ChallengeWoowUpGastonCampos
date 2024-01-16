@@ -11,6 +11,26 @@ namespace Challenge_WoowUp_Gaston_Campos
     [TestClass]
     public class SistemaAlertasTests
     {
+        private void InitSistema(ref SistemaAlertas sistemaAlertas)
+        {
+            sistemaAlertas.RegistrarTema("Tema01");
+            sistemaAlertas.RegistrarUsuario("Usuario1");
+            sistemaAlertas.RegistrarUsuario("Usuario2");
+
+            sistemaAlertas.AsignarTemaAUsuario("Usuario1", "Tema01");
+            sistemaAlertas.AsignarTemaAUsuario("Usuario2", "Tema01");
+        }
+        private void EnviarAlertas(ref SistemaAlertas sistemaAlertas)
+        {
+            /*Las alertas que se muestran a continuacion estan en el orden del ejemplo del punto 11*/
+            sistemaAlertas.EnviarAlerta("I1", TipoAlerta.Informativa, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
+            sistemaAlertas.EnviarAlerta("I2", TipoAlerta.Informativa, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
+            sistemaAlertas.EnviarAlerta("U1", TipoAlerta.Urgente, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
+            sistemaAlertas.EnviarAlerta("I3", TipoAlerta.Informativa, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
+            sistemaAlertas.EnviarAlerta("U2", TipoAlerta.Urgente, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
+            sistemaAlertas.EnviarAlerta("I4", TipoAlerta.Informativa, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
+        }
+
         [TestMethod]
         public void RegistrarUsuario()
         {
@@ -152,25 +172,36 @@ namespace Challenge_WoowUp_Gaston_Campos
             Assert.IsTrue(alertasMensaje.SequenceEqual(secuenciaBuscada));
         }
 
-        private void EnviarAlertas(ref SistemaAlertas sistemaAlertas)
+        [TestMethod]
+        public void ObtenerAlertasNoExpiradasParaUnTemaGeneral()
         {
-            sistemaAlertas.EnviarAlerta("I1", TipoAlerta.Informativa, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
-            sistemaAlertas.EnviarAlerta("I2", TipoAlerta.Informativa, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
-            sistemaAlertas.EnviarAlerta("U1", TipoAlerta.Urgente, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
-            sistemaAlertas.EnviarAlerta("I3", TipoAlerta.Informativa, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
-            sistemaAlertas.EnviarAlerta("U2", TipoAlerta.Urgente, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
-            sistemaAlertas.EnviarAlerta("I4", TipoAlerta.Informativa, "Tema01", fechaExpiracion: new DateTime(2024, 2, 15, 5, 10, 0));
+            // Arrange
+            var sistemaAlertas = new SistemaAlertas();
+            InitSistema(ref sistemaAlertas);
+
+            // Act
+            EnviarAlertas(ref sistemaAlertas);
+
+            // Assert
+            var alertasNoLeidas = sistemaAlertas.ObtenerAlertasNoExpiradasPorTema("Tema01");
+
+            Assert.AreEqual(12, alertasNoLeidas.Count);
         }
 
-        private void InitSistema(ref SistemaAlertas sistemaAlertas)
+        [TestMethod]
+        public void ObtenerAlertasNoExpiradasParaUnTemaPorUsuario()
         {
-            sistemaAlertas.RegistrarTema("Tema01");
-            sistemaAlertas.RegistrarUsuario("Usuario1");
-            sistemaAlertas.RegistrarUsuario("Usuario2");
+            // Arrange
+            var sistemaAlertas = new SistemaAlertas();
+            InitSistema(ref sistemaAlertas);
 
-            sistemaAlertas.AsignarTemaAUsuario("Usuario1", "Tema01");
-            sistemaAlertas.AsignarTemaAUsuario("Usuario2", "Tema01");
+            // Act
+            EnviarAlertas(ref sistemaAlertas);
+
+            // Assert
+            var alertasNoLeidas = sistemaAlertas.ObtenerAlertasNoExpiradasPorTema("Tema01", nombreUser: "Usuario1");
+
+            Assert.AreEqual(6, alertasNoLeidas.Count);
         }
-
     }
 }
