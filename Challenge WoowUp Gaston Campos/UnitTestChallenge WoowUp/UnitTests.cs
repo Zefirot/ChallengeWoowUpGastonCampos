@@ -9,7 +9,7 @@ using UnitTestChallenge_WoowUp.src;
 namespace Challenge_WoowUp_Gaston_Campos
 {
     [TestClass]
-    public class UsuarioTest
+    public class UnitTests
     {
         [TestMethod]
         public void AgregarAlerta()
