@@ -75,6 +75,30 @@ public class SistemaAlertas
 
         return new List<Alerta>();        
     }
+
+    public List<Alerta> ObtenerAlertasNoExpiradasPorTema(string tema, string nombreUser = "")
+    {
+        List<Alerta> alertasObtenidas = new List<Alerta>();
+
+        if(nombreUser != "")
+        {
+            Usuario userFilter = usuarios.Find(user => user.Nombre == nombreUser);
+
+            if(userFilter != null)
+            {
+                alertasObtenidas = userFilter.ObtenerAlertasPorTema(tema);
+            }
+        }
+        else
+        {
+            foreach(Usuario user in usuarios)
+            {
+                alertasObtenidas.AddRange(user.ObtenerAlertasPorTema(tema));
+            }
+        }
+
+        return alertasObtenidas;
+    }
 }
 
 /*

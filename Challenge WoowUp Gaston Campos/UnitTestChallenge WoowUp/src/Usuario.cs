@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,11 +70,20 @@ namespace UnitTestChallenge_WoowUp.src
 
         public List<Alerta> ObtenerAlertasNoLeidas()
         {
+            return GetAlertasFilterBy(alert => !alert.Leida && alert.FechaExpiracion > DateTime.Now);
+        }
+
+        public List<Alerta> ObtenerAlertasPorTema(string tema)
+        {
+            return GetAlertasFilterBy(alert => alert.Tema == tema && alert.FechaExpiracion > DateTime.Now);
+        }
+
+        private List<Alerta> GetAlertasFilterBy(Predicate<Alerta> predicate)
+        {
             List<Alerta> alertasObtenidas = new List<Alerta>();
 
-            List<Alerta> alertasUrgentes = AlertasUrgentes.ToList().FindAll(alert => !alert.Leida && alert.FechaExpiracion > DateTime.Now);
-
-            List<Alerta> alertasInformativas = AlertasInformativas.FindAll(alert => !alert.Leida && alert.FechaExpiracion > DateTime.Now);
+            List<Alerta> alertasUrgentes = AlertasUrgentes.ToList().FindAll(predicate);
+            List<Alerta> alertasInformativas = AlertasInformativas.FindAll(predicate);
 
             alertasObtenidas.AddRange(alertasUrgentes);
             alertasObtenidas.AddRange(alertasInformativas);

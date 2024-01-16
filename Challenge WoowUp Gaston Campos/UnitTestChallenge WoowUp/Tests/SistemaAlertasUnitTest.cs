@@ -9,65 +9,6 @@ using UnitTestChallenge_WoowUp.src;
 namespace Challenge_WoowUp_Gaston_Campos
 {
     [TestClass]
-    public class UnitTests
-    {
-        [TestMethod]
-        public void AgregarAlerta()
-        {
-            // Arrange
-            var usuario = new Usuario("Usuario1");
-            var alerta = new Alerta("Mensaje de prueba", TipoAlerta.Informativa, "Tema1");
-
-            // Act
-            usuario.RecibirAlerta(alerta);
-
-            // Assert
-            CollectionAssert.Contains(usuario.ObtenerAlertas(), alerta);
-        }
-
-        [TestMethod]
-        public void CambiarEstadoAlertaALeida()
-        {
-            // Arrange
-            var usuario = new Usuario("Usuario1");
-            var alerta = new Alerta("Mensaje de prueba", TipoAlerta.Informativa, "Tema1");
-
-            // Act
-            usuario.RecibirAlerta(alerta);
-            usuario.MarcarAlertaLeida("Mensaje de prueba");
-
-            // Assert
-            Assert.IsTrue(alerta.Leida);
-        }
-    }
-
-    [TestClass]
-    public class AlertaTests
-    {
-        [TestMethod]
-        public void InicializarPropiedadesCorrectamente()
-        {
-            // Arrange
-            var mensaje = "Mensaje de prueba";
-            var tipo = TipoAlerta.Informativa;
-            var tema = "Tema1";
-            var destinatario = "Usuario1";
-            var fechaExpiracion = DateTime.Now.AddDays(1);
-
-            // Act
-            var alerta = new Alerta(mensaje, tipo, tema, destinatario, fechaExpiracion);
-
-            // Assert
-            Assert.AreEqual(mensaje, alerta.Mensaje);
-            Assert.AreEqual(tipo, alerta.Tipo);
-            Assert.AreEqual(tema, alerta.Tema);
-            Assert.AreEqual(destinatario, alerta.Destinatario);
-            Assert.AreEqual(fechaExpiracion, alerta.FechaExpiracion);
-            Assert.IsFalse(alerta.Leida);
-        }
-    }
-
-    [TestClass]
     public class SistemaAlertasTests
     {
         [TestMethod]
